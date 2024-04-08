@@ -160,14 +160,6 @@ const Home = () => {
                     <button onClick={fetchRandomFlag} className="w-3/5 flex items-center justify-center text-2xl text-white font-semibold py-3 bg-cyan-600 rounded-2xl">GRCYCLE</button>
                     </div>
             </div>
-
-            {/* <div className="flex-1 pt-16">
-                <section  className="w-auto h-auto shadow-2xl shadow-black rounded-2xl">
-                    <div className="flex items-center justify-center">
-                        <p className="text-cyan-900 font-bold">HINT:</p>
-                    </div>
-                </section>
-            </div> */}
         </main>
     )
 }
