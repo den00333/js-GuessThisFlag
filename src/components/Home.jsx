@@ -171,10 +171,11 @@ const Home = () => {
                         <p className={`${resultColor} font-semibold text-xl`}>{resultMsg}</p>
                         <input type="text" onChange={handleInput} disabled={disable} required value={flagGuess} placeholder="Enter the Flag Name" className="w-4/5 p-2 bg-transparent outline-0 border-b-2 border-black placeholder-black text-2xl"/>
                         <button type="submit" disabled={disable} className="w-4/5 text-2xl text-white font-semibold py-3 my-2 bg-cyan-800 rounded-2xl">Submit</button>
+                        <div className="w-full py-2 flex items-center justify-center">
+                            <button onClick={fetchRandomFlag} disabled={disable} className="w-3/5 flex items-center justify-center text-2xl text-white font-semibold py-3 bg-cyan-600 rounded-2xl">PASS</button>
+                        </div>
                     </form>
-                    <div className="w-full py-2 flex items-center justify-center">
-                    <button onClick={fetchRandomFlag} disabled={disable} className="w-3/5 flex items-center justify-center text-2xl text-white font-semibold py-3 bg-cyan-600 rounded-2xl">PASS</button>
-                    </div>
+                    
             </div>
         </main>
     )
