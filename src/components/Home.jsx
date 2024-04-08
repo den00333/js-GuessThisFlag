@@ -14,6 +14,8 @@ const Home = () => {
     const [existingNum, setExistingNum] = useState([]);
     const [newNums, setNewNums] = useState([]);
 
+    const [flagMsg, setFlagMsg] = useState();
+    const [disable, setDisable] = useState(false)
     
 
 
@@ -29,6 +31,7 @@ const Home = () => {
                 const flagUrl = data[randomIndex].flags.png;
                 const countryName = data[randomIndex].name.common;
                 setFlagData({ img: flagUrl, name: countryName });
+                setFlagMsg(countryName);
                 let n = countryName.toUpperCase().split('');
                 setSirit(n);
                 
@@ -42,6 +45,7 @@ const Home = () => {
                 }
                 setUnderline(tempArr);
                 setExistingNum([]);
+                setDisable(false);
             })
         .catch(error => console.log('Error fetching data: ', error));
         setLives(3);
@@ -98,26 +102,38 @@ const Home = () => {
                 
             } else {
 
-                setResultMsg('Incorrect. Try again.');
-                setResultColor('text-red-700');
-                if(!(existingNum.length-1 >= sirit.length-2)){
-                    generateLetter();
-                }
-                showLetters();
-                console.log(existingNum + 'asd');
-
-                setLives(prevLives => {
-                    return prevLives - 1;
-                })
+                
                 
                 if(lives <= 0){
-                    fetchRandomFlag();
+                    setResultMsg(`The answer was ${flagMsg}`);
+                    setResultColor('text-red-700');
+                    setDisable(true)
+                    setTimeout(() => {
+                        setResultMsg('');
+                        fetchRandomFlag();
+                    }, 2500);
+
+                    
+
+                }else{
+                    setResultMsg('Incorrect. Try again.');
+                    setResultColor('text-red-700');
+                    if(!(existingNum.length-1 >= sirit.length-2)){
+                        generateLetter();
+                    }
+                    showLetters();
+
+                    setLives(prevLives => {
+                        return prevLives - 1;
+                    })
+
+                    setTimeout(() => {
+                        setResultMsg('');
+                    }, 1500);
                 }
             }
             setFlagGuess('');
-            setTimeout(() => {
-                setResultMsg('');
-            }, 1000);
+            
         }catch(error){
             console.log('error');
         }
@@ -130,7 +146,7 @@ const Home = () => {
 
     return(
         
-        <main className="flex justify-center w-full h-screen bg-emerald-400">
+        <main className="flex justify-center w-full h-auto bg-emerald-400">
 
             <div className=" p-5">
                     <div className="w-auto h-auto p-1 flex items-center justify-center">
@@ -138,8 +154,8 @@ const Home = () => {
                     </div>
                     <div className="w-full h-auto p-1 flex items-center justify-center">
                        
-                        <p>Score: {score}</p>
-                        <p>Lives: {lives}</p>
+                        <p className="text-xl mx-2">Score: {score}</p>
+                        <p className="text-xl mx-2">Lives: {lives}</p>
                     </div>
                     <div className="w-full h-auto flex items-center justify-center py-5">
                         <img src={flagData.img} alt="flag" className="w-18 h-18"/>
@@ -153,11 +169,11 @@ const Home = () => {
 
                     <form action="" onSubmit={(e)=>{e.preventDefault(); checkGuess();}} className="w-full h-auto p-2 text-center bg-slate-400">
                         <p className={`${resultColor} font-semibold text-xl`}>{resultMsg}</p>
-                        <input type="text" onChange={handleInput} required value={flagGuess} placeholder="Enter the Flag Name" className="w-4/5 p-2 bg-transparent outline-0 border-b-2 border-black placeholder-black text-2xl"/>
-                        <button type="submit" className="w-4/5 text-2xl text-white font-semibold py-3 my-2 bg-cyan-800 rounded-2xl">Submit</button>
+                        <input type="text" onChange={handleInput} disabled={disable} required value={flagGuess} placeholder="Enter the Flag Name" className="w-4/5 p-2 bg-transparent outline-0 border-b-2 border-black placeholder-black text-2xl"/>
+                        <button type="submit" disabled={disable} className="w-4/5 text-2xl text-white font-semibold py-3 my-2 bg-cyan-800 rounded-2xl">Submit</button>
                     </form>
                     <div className="w-full py-2 flex items-center justify-center">
-                    <button onClick={fetchRandomFlag} className="w-3/5 flex items-center justify-center text-2xl text-white font-semibold py-3 bg-cyan-600 rounded-2xl">GRCYCLE</button>
+                    <button onClick={fetchRandomFlag} disabled={disable} className="w-3/5 flex items-center justify-center text-2xl text-white font-semibold py-3 bg-cyan-600 rounded-2xl">PASS</button>
                     </div>
             </div>
         </main>
